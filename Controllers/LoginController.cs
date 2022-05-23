@@ -4,9 +4,16 @@ using Npgsql;
 namespace dotnet_backend.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class LoginController : ControllerBase
 {
+    private readonly ILogger<LoginController> _logger;
+
+    public LoginController(ILogger<LoginController> logger)
+    {
+        _logger = logger;
+    }
+
     [HttpGet()]
     public async Task<Dictionary<string, string>> Get([FromQuery]string email, [FromQuery]string password)
     {

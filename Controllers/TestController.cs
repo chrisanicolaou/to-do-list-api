@@ -4,7 +4,7 @@ using Npgsql;
 namespace dotnet_backend.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class TestController : ControllerBase
 {
     private static readonly string[] emails = new[]
@@ -17,14 +17,10 @@ public class TestController : ControllerBase
     };
 
     [HttpGet(Name = "GetTest")]
-    public async Task<List<Array>> Get()
+    public async Task<List<User>> Get()
     {
 
-        User[] users = Enumerable.Range(1, 5).Select(index => new User
-        {
-            Email = emails[Random.Shared.Next(emails.Length)],
-            Password = passwords[Random.Shared.Next(passwords.Length)]
-        })
+        User[] users = Enumerable.Range(1, 5).Select(index => new User(emails[Random.Shared.Next(emails.Length)], passwords[Random.Shared.Next(passwords.Length)]))
         .ToArray();
 
         await using var conn = new NpgsqlConnection(Connection.cs);
@@ -45,12 +41,12 @@ public class TestController : ControllerBase
         using var cmd = new NpgsqlCommand(sql, conn);
         using var reader = await cmd.ExecuteReaderAsync();
 
-        var result = new List<Array>();
+        var result = new List<User>();
 
         while (reader.Read()) {
             var email = reader.GetString(reader.GetOrdinal("email"));
             var password = reader.GetString(reader.GetOrdinal("password"));
-            var thisUser = new string[2] {email, password};
+            var thisUser = new User(email, password);
             result.Add(thisUser);
         }
         await conn.CloseAsync();
