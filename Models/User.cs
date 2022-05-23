@@ -1,13 +1,12 @@
-namespace dotnet_backend;
+﻿using System;
+using System.Collections.Generic;
 
-public class CurrentUser
+namespace dotnet_backend
 {
-    public string? Email { get; set; }
-    public string? Password { get; set; }
-
-    public CurrentUser(string email, string password)
+    public partial class User
     {
-        Email = email;
-        Password = password;
+        public int Id { get; set; }
+        public string? Email { get; set; }
+        public string? Password { get; set; }
     }
 }

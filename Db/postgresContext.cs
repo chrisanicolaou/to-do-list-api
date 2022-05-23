@@ -23,9 +23,8 @@ namespace dotnet_backend
         {
             if (!optionsBuilder.IsConfigured)
             {
-                var secret = Utils.GetSecret();
-                Connection? connectionDetails = JsonConvert.DeserializeObject<Connection>(secret);
-                optionsBuilder.UseNpgsql($"host={connectionDetails?.host};port={connectionDetails?.port};username={connectionDetails?.username};password={connectionDetails?.password};database={connectionDetails?.dbCluster}");
+                Connection connDetails = Connection.GetSecret();
+                optionsBuilder.UseNpgsql($"host={connDetails?.host};port={connDetails?.port};username={connDetails?.username};password={connDetails?.password};database={connDetails?.engine}");
             }
         }
 

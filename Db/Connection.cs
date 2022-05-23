@@ -4,19 +4,22 @@ using Amazon.SecretsManager;
 using Amazon.SecretsManager.Model;
 using Newtonsoft.Json;
 
-public static class Utils
+namespace dotnet_backend;
+
+public class Connection
 {
-    public static async Task<int> RunCommand(NpgsqlConnection con, string cmdText) {
+    public string? username { get; set; }
+    public string? password { get; set; }
+    public string? engine { get; set; }
+    public string? host { get; set; }
+    public int? port { get; set; }
+    public string? dbCluster { get; set; }
 
-        using var cmd = new NpgsqlCommand();
-        cmd.Connection = con;
-
-        cmd.CommandText = cmdText;
-        var result = await cmd.ExecuteNonQueryAsync();
-        return result;
+    public Connection()
+    {
     }
 
-    public static string GetSecret()
+    public static Connection GetSecret()
     {
         string secretName = "to-do-connection-string";
         string region = "eu-west-2";
@@ -90,6 +93,9 @@ public static class Utils
             string decodedBinarySecret = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(reader.ReadToEnd()));
             secret = decodedBinarySecret;
         }
-        return secret;
+        
+        # nullable disable
+        return JsonConvert.DeserializeObject<Connection>(secret);
     }
+
 }
