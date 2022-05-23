@@ -18,6 +18,7 @@ namespace dotnet_backend
         }
 
         public virtual DbSet<User> Users { get; set; } = null!;
+        public virtual DbSet<ToDoItem> ToDoItems { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -43,6 +44,20 @@ namespace dotnet_backend
                 entity.Property(e => e.Password)
                     .HasMaxLength(20)
                     .HasColumnName("password");
+            });
+            modelBuilder.Entity<ToDoItem>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("to_do_items");
+
+                entity.Property(e => e.Description)
+                    .HasMaxLength(255)
+                    .HasColumnName("description");
+
+                entity.Property(e => e.IsActive).HasColumnName("is_active");
+
+                entity.Property(e => e.UserId).HasColumnName("user_id");
             });
 
             OnModelCreatingPartial(modelBuilder);
