@@ -18,11 +18,18 @@ public class ToDoController : ControllerBase
         }        
     }
 
-    [HttpDelete("{email}")]
-    public async Task<IActionResult> DeleteToDos(string email)
+    // how to "authenticate" an endpoint to prevent malicious API calls.
+    // Should I be using encryption > plain text emails and/or passwords?
+    [HttpDelete("{email}/{password}")]
+    public async Task<IActionResult> DeleteToDos(string email, string password)
     {
         using (var context = new postgresContext())
         {
+            try {
+                var userExists = context.Users.Single(user => user.Email == email && user.Password == password);
+            } catch {
+                return NotFound();
+            }
             var itemsToDelete = context.ToDoItems.Where(item => item.UserEmail == email);
             context.RemoveRange(itemsToDelete);
             await context.SaveChangesAsync();
@@ -47,7 +54,7 @@ public class ToDoController : ControllerBase
         using (var context = new postgresContext())
         {
             var toDoToUpdate = context.ToDoItems.FirstOrDefault(item => item.ToDoId == id);
-            if (toDoToUpdate == null) return BadRequest();
+            if (toDoToUpdate == null) return NotFound();
 
             if (update.Description != null) toDoToUpdate.Description = update.Description;
             if (update.IsActive != null) toDoToUpdate.IsActive = update.IsActive;

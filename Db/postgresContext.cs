@@ -24,7 +24,8 @@ namespace dotnet_backend
         {
             if (!optionsBuilder.IsConfigured)
             {
-                Connection connDetails = Connection.GetSecret();
+                Connection connDetails = new Connection();
+                connDetails = Connection.GetSecret();
                 optionsBuilder.UseNpgsql($"host={connDetails?.host};port={connDetails?.port};username={connDetails?.username};password={connDetails?.password};database={connDetails?.engine}");
             }
         }

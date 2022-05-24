@@ -16,3 +16,6 @@ public class LoginController : ControllerBase
         }
     }
 }
+
+// Should the Login/SignUps have separate controllers? Or should there be one "UsersController"
+// Similar to ToDoController? Unsure on best practice

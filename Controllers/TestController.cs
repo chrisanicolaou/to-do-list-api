@@ -14,7 +14,9 @@ public class TestController : ControllerBase
             var users = context.Users.ToList();
             return users;
         }
+
         // OLD CODE BELOW - to remind me of what i went through
+        
         // await using var conn = new NpgsqlConnection(Connection.cs);
         // await conn.OpenAsync();
 
