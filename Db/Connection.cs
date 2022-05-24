@@ -29,7 +29,13 @@ public class Connection
 
         IAmazonSecretsManager client = new AmazonSecretsManagerClient(RegionEndpoint.GetBySystemName(region));
 
-        GetSecretValueRequest request = new GetSecretValueRequest();
+        #if DEBUG
+            GetSecretValueRequest request = new GetSecretValueRequest();
+        #else
+            Console.WriteLine("In else");
+            GetSecretValueRequest request = new GetSecretValueRequest(Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID"), Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY"));
+        #endif
+
         request.SecretId = secretName;
         request.VersionStage = "AWSCURRENT"; // VersionStage defaults to AWSCURRENT if unspecified.
 
