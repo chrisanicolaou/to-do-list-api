@@ -26,7 +26,11 @@ namespace dotnet_backend
             {
                 Connection connDetails = new Connection();
                 connDetails = Connection.GetSecret();
-                optionsBuilder.UseNpgsql($"host={connDetails?.host};port={connDetails?.port};username={connDetails?.username};password={connDetails?.password};database={connDetails?.engine}");
+                try {
+                    optionsBuilder.UseNpgsql($"host={connDetails?.host};port={connDetails?.port};username={connDetails?.username};password={connDetails?.password};database={connDetails?.engine}");
+                } catch (Exception e) {
+                    throw e;
+                }
             }
         }
 
