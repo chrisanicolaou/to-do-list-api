@@ -44,21 +44,18 @@ namespace dotnet_backend
             });
             modelBuilder.Entity<ToDoItem>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.ToDoId)
+                    .HasName("to_do_items_pkey");
 
                 entity.ToTable("to_do_items");
+
+                entity.Property(e => e.ToDoId).HasColumnName("to_do_id");
 
                 entity.Property(e => e.Description).HasColumnName("description");
 
                 entity.Property(e => e.IsActive).HasColumnName("is_active");
 
                 entity.Property(e => e.UserEmail).HasColumnName("user_email");
-
-                entity.HasOne(d => d.UserEmailNavigation)
-                    .WithMany()
-                    .HasForeignKey(d => d.UserEmail)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("to_do_items_user_email_fkey");
             });
 
             OnModelCreatingPartial(modelBuilder);
