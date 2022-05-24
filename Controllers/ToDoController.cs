@@ -18,6 +18,18 @@ public class ToDoController : ControllerBase
         }        
     }
 
+    [HttpDelete("{email}")]
+    public async Task<IActionResult> DeleteToDos(string email)
+    {
+        using (var context = new postgresContext())
+        {
+            var itemsToDelete = context.ToDoItems.Where(item => item.UserEmail == email);
+            context.RemoveRange(itemsToDelete);
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+    }
+
     [HttpPost()]
     public async Task<ActionResult<ToDoItem>> AddToDoItem(ToDoItem newToDo)
     {
