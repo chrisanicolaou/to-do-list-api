@@ -28,14 +28,7 @@ public class Connection
         MemoryStream memoryStream = new MemoryStream();
 
         IAmazonSecretsManager client = new AmazonSecretsManagerClient(RegionEndpoint.GetBySystemName(region));
-
-        #if DEBUG
-            GetSecretValueRequest request = new GetSecretValueRequest();
-        #else
-            Console.WriteLine("In else");
-            GetSecretValueRequest request = new GetSecretValueRequest(Environment.GetEnvironmentVariable("AWS_ACCESS_KEY_ID"), Environment.GetEnvironmentVariable("AWS_SECRET_ACCESS_KEY"));
-        #endif
-
+        GetSecretValueRequest request = new GetSecretValueRequest();
         request.SecretId = secretName;
         request.VersionStage = "AWSCURRENT"; // VersionStage defaults to AWSCURRENT if unspecified.
 
