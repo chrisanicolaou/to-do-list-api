@@ -6,8 +6,8 @@ namespace dotnet_backend.Controllers;
 [Route("api/[controller]")]
 public class LoginController : ControllerBase
 {
-    [HttpGet()]
-    public User Get([FromQuery]string email, [FromQuery]string password)
+    [HttpGet("{email}/{password}")]
+    public User GetQuery(string email, string password)
     {
         using (var context = new postgresContext())
         {

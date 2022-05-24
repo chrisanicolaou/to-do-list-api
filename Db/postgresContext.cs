@@ -33,17 +33,14 @@ namespace dotnet_backend
         {
             modelBuilder.Entity<User>(entity =>
             {
+                entity.HasKey(e => e.Email)
+                    .HasName("users_pkey");
+
                 entity.ToTable("users");
 
-                entity.Property(e => e.Id).HasColumnName("id");
+                entity.Property(e => e.Email).HasColumnName("email");
 
-                entity.Property(e => e.Email)
-                    .HasMaxLength(255)
-                    .HasColumnName("email");
-
-                entity.Property(e => e.Password)
-                    .HasMaxLength(20)
-                    .HasColumnName("password");
+                entity.Property(e => e.Password).HasColumnName("password");
             });
             modelBuilder.Entity<ToDoItem>(entity =>
             {
@@ -51,13 +48,17 @@ namespace dotnet_backend
 
                 entity.ToTable("to_do_items");
 
-                entity.Property(e => e.Description)
-                    .HasMaxLength(255)
-                    .HasColumnName("description");
+                entity.Property(e => e.Description).HasColumnName("description");
 
                 entity.Property(e => e.IsActive).HasColumnName("is_active");
 
-                entity.Property(e => e.UserId).HasColumnName("user_id");
+                entity.Property(e => e.UserEmail).HasColumnName("user_email");
+
+                entity.HasOne(d => d.UserEmailNavigation)
+                    .WithMany()
+                    .HasForeignKey(d => d.UserEmail)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("to_do_items_user_email_fkey");
             });
 
             OnModelCreatingPartial(modelBuilder);
