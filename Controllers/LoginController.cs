@@ -7,12 +7,22 @@ namespace dotnet_backend.Controllers;
 public class LoginController : ControllerBase
 {
     [HttpGet("{email}/{password}")]
-    public User GetQuery(string email, string password)
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(User))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public IActionResult GetQuery(string email, string password)
     {
         using (var context = new postgresContext())
         {
-            var user = context.Users.Single(user => user.Email == email && user.Password == password);
-            return user;
+            try {
+                var user = context.Users.Single(user => user.Email == email);
+                var checkPass = Utils.Encrypt(password, user.Salt);
+                if (checkPass != user.Password) {
+                    return NotFound();
+                }
+                return Ok(user);
+            } catch {
+                return NotFound();
+            }
         }
     }
 }

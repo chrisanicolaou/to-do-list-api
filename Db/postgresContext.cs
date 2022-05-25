@@ -28,8 +28,8 @@ namespace dotnet_backend
                 connDetails = Connection.GetSecret();
                 try {
                     optionsBuilder.UseNpgsql($"host={connDetails?.host};port={connDetails?.port};username={connDetails?.username};password={connDetails?.password};database={connDetails?.engine}");
-                } catch (Exception e) {
-                    throw e;
+                } catch {
+                    throw new Exception("Something went wrong with the database connection!");
                 }
             }
         }
@@ -46,6 +46,8 @@ namespace dotnet_backend
                 entity.Property(e => e.Email).HasColumnName("email");
 
                 entity.Property(e => e.Password).HasColumnName("password");
+
+                entity.Property(e => e.Salt).HasColumnName("sugar");
             });
             modelBuilder.Entity<ToDoItem>(entity =>
             {

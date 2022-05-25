@@ -9,6 +9,8 @@ public class SignUpController : ControllerBase
     [HttpPost()]
     public async Task<ActionResult<User>> SignUpUser(User newUser)
     {
+        newUser.Salt = Utils.GenerateSalt();
+        newUser.Password = Utils.Encrypt(newUser.Password, newUser.Salt);
         using (var context = new postgresContext())
         {
             context.Users.Add(newUser);
