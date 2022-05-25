@@ -7,13 +7,15 @@ namespace dotnet_backend.Controllers;
 public class SignUpController : ControllerBase
 {
     [HttpPost()]
-    public async Task<ActionResult<User>> SignUpUser(User newUser)
+    public async Task<ActionResult<UserDTO>> SignUpUser(UserDTO newUser)
     {
-        newUser.Salt = Utils.GenerateSalt();
-        newUser.Password = Utils.Encrypt(newUser.Password, newUser.Salt);
+        var userToAdd = new User();
+        userToAdd.Email = newUser.Email;
+        userToAdd.Salt = Utils.GenerateSalt();
+        userToAdd.Password = Utils.Encrypt(newUser.Password, userToAdd.Salt);
         using (var context = new postgresContext())
         {
-            context.Users.Add(newUser);
+            context.Users.Add(userToAdd);
             await context.SaveChangesAsync();
             return CreatedAtAction("SignUpUser", newUser);
         }
