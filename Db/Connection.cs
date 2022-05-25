@@ -92,8 +92,6 @@ public class Connection
             string decodedBinarySecret = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(reader.ReadToEnd()));
             secret = decodedBinarySecret;
         }
-
-        Console.WriteLine($"Secret successfully decrypted: {secret}");
         
         # nullable disable
         return JsonConvert.DeserializeObject<Connection>(secret);
