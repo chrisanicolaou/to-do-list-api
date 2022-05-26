@@ -10,9 +10,18 @@ namespace dotnet_backend
         public string Salt { get; set; } = null!;
     }
 
-    public partial class UserDTO
+    public partial class NewUser
     {
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
+    }
+
+    public partial class UserDTO
+    {
+        public string Email { get; set; } = null!;
+
+        public UserDTO(string email) {
+            this.Email = email;
+        }
     }
 }

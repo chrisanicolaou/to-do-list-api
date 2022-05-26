@@ -19,7 +19,7 @@ public class LoginController : ControllerBase
                 if (checkPass != user.Password) {
                     return NotFound();
                 }
-                return Ok(user);
+                return Ok(new UserDTO(user.Email));
             } catch {
                 return NotFound();
             }

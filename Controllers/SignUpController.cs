@@ -7,7 +7,7 @@ namespace dotnet_backend.Controllers;
 public class SignUpController : ControllerBase
 {
     [HttpPost()]
-    public async Task<ActionResult<UserDTO>> SignUpUser(UserDTO newUser)
+    public async Task<ActionResult<NewUser>> SignUpUser(NewUser newUser)
     {
         var userToAdd = new User();
         userToAdd.Email = newUser.Email;
@@ -17,7 +17,7 @@ public class SignUpController : ControllerBase
         {
             context.Users.Add(userToAdd);
             await context.SaveChangesAsync();
-            return CreatedAtAction("SignUpUser", newUser);
+            return CreatedAtAction("SignUpUser", new UserDTO(newUser.Email));
         }
     }
 }
