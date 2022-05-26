@@ -6,6 +6,7 @@ namespace dotnet_backend
     public partial class ToDoItem
     {
         public int ToDoId { get; set; }
+        public int ArrayIndex { get; set; }
         public string UserEmail { get; set; } = null!;
         public string Description { get; set; } = null!;
         public bool? IsActive { get; set; }
@@ -13,6 +14,7 @@ namespace dotnet_backend
 
     public class ToDoItemDTO
     {
+        public int? ArrayIndex { get; set; }
         public bool? IsActive { get; set; }
         public string? Description { get; set; }
     }

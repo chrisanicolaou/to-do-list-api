@@ -63,6 +63,8 @@ namespace dotnet_backend
                 entity.Property(e => e.IsActive).HasColumnName("is_active");
 
                 entity.Property(e => e.UserEmail).HasColumnName("user_email");
+
+                entity.Property(e => e.ArrayIndex).HasColumnName("array_index");
             });
 
             OnModelCreatingPartial(modelBuilder);
