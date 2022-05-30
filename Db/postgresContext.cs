@@ -64,7 +64,9 @@ namespace dotnet_backend
 
                 entity.Property(e => e.UserEmail).HasColumnName("user_email");
 
-                entity.Property(e => e.ArrayIndex).HasColumnName("array_index");
+                entity.Property(e => e.DateCreated).HasColumnName("date_created");
+
+                entity.Property(e => e.DateUpdated).HasColumnName("date_updated");
             });
 
             OnModelCreatingPartial(modelBuilder);

@@ -13,7 +13,7 @@ public class ToDoController : ControllerBase
 
         using (var context = new postgresContext())
         {
-            var usersToDos = context.ToDoItems.Where(toDo => toDo.UserEmail == email).OrderBy(sort => sort.ArrayIndex).ToList();
+            var usersToDos = context.ToDoItems.Where(toDo => toDo.UserEmail == email).OrderBy(sort => sort.DateUpdated).ToList();
             return usersToDos;
         }        
     }
@@ -63,7 +63,7 @@ public class ToDoController : ControllerBase
 
             if (update.Description != null) toDoToUpdate.Description = update.Description;
             if (update.IsActive != null) toDoToUpdate.IsActive = update.IsActive;
-            if (update.ArrayIndex != null)toDoToUpdate.ArrayIndex = (int)update.ArrayIndex;
+            if (update.DateUpdated != null)toDoToUpdate.DateUpdated = update.DateUpdated;
             await context.SaveChangesAsync();
 
             return NoContent();
