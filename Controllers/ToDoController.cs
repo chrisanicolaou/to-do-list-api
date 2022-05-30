@@ -43,14 +43,15 @@ public class ToDoController : ControllerBase
     }
 
     [HttpPost()]
-    public async Task<ActionResult<ToDoItem>> AddToDoItem(AddToDo newToDo)
+    public async Task<ActionResult<ToDoItem>> AddToDoItem(ToDoItem newToDo)
     {
         using (var context = new postgresContext())
         {
-            var toDoToAdd = new ToDoItem(newToDo.UserEmail, newToDo.Description, newToDo.DateCreated, newToDo.ArrayIndex);
-            context.ToDoItems.Add(toDoToAdd);
+            newToDo.DateUpdated = newToDo.DateCreated;
+            newToDo.IsActive = true;
+            context.ToDoItems.Add(newToDo);
             await context.SaveChangesAsync();
-            return CreatedAtAction("AddToDoItem", toDoToAdd);
+            return CreatedAtAction("AddToDoItem", newToDo);
         }
     }
 

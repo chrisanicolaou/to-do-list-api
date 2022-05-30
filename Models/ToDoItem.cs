@@ -12,16 +12,6 @@ namespace dotnet_backend
         public string DateCreated { get; set; } = null!;
         public string DateUpdated { get; set; } = null!;
         public int ArrayIndex { get; set; }
-
-        public ToDoItem(string email, string desc, string dateCreated, int arrayIndex)
-        {
-            this.UserEmail = email;
-            this.Description = desc;
-            this.IsActive = true;
-            this.DateCreated = dateCreated;
-            this.DateUpdated = dateCreated;
-            this.ArrayIndex = arrayIndex;
-        }
     }
 
     public class ToDoItemDTO
