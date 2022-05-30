@@ -13,7 +13,7 @@ public class ToDoController : ControllerBase
 
         using (var context = new postgresContext())
         {
-            var usersToDos = context.ToDoItems.Where(toDo => toDo.UserEmail == email).OrderBy(sort => sort.DateUpdated).ToList();
+            var usersToDos = context.ToDoItems.Where(toDo => toDo.UserEmail == email).OrderBy(sort => sort.ArrayIndex).ToList();
             return usersToDos;
         }        
     }
@@ -43,13 +43,14 @@ public class ToDoController : ControllerBase
     }
 
     [HttpPost()]
-    public async Task<ActionResult<ToDoItem>> AddToDoItem(ToDoItem newToDo)
+    public async Task<ActionResult<ToDoItem>> AddToDoItem(AddToDo newToDo)
     {
         using (var context = new postgresContext())
         {
-            context.ToDoItems.Add(newToDo);
+            var toDoToAdd = new ToDoItem(newToDo.UserEmail, newToDo.Description, newToDo.DateCreated, newToDo.ArrayIndex);
+            context.ToDoItems.Add(toDoToAdd);
             await context.SaveChangesAsync();
-            return CreatedAtAction("AddToDoItem", newToDo);
+            return CreatedAtAction("AddToDoItem", toDoToAdd);
         }
     }
 
@@ -63,7 +64,8 @@ public class ToDoController : ControllerBase
 
             if (update.Description != null) toDoToUpdate.Description = update.Description;
             if (update.IsActive != null) toDoToUpdate.IsActive = update.IsActive;
-            if (update.DateUpdated != null)toDoToUpdate.DateUpdated = update.DateUpdated;
+            if (update.DateUpdated != null) toDoToUpdate.DateUpdated = update.DateUpdated;
+            if (update.ArrayIndex != null) toDoToUpdate.ArrayIndex = (int)update.ArrayIndex;
             await context.SaveChangesAsync();
 
             return NoContent();

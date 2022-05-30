@@ -67,6 +67,8 @@ namespace dotnet_backend
                 entity.Property(e => e.DateCreated).HasColumnName("date_created");
 
                 entity.Property(e => e.DateUpdated).HasColumnName("date_updated");
+
+                entity.Property(e => e.ArrayIndex).HasColumnName("array_index");
             });
 
             OnModelCreatingPartial(modelBuilder);
