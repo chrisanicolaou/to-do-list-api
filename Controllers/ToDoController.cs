@@ -72,4 +72,30 @@ public class ToDoController : ControllerBase
             return NoContent();
         }
     }
+
+    [HttpDelete("{id}/{email}/{password}")]
+    public async Task<IActionResult> DeleteToDoItem(int id, string email, string password)
+    {
+        using (var context = new postgresContext())
+        {
+            try {
+                var user = context.Users.Single(user => user.Email == email);
+                var encryptedPass = Utils.Encrypt(password, user.Salt);
+                if (encryptedPass != user.Password) {
+                    return BadRequest();
+                }
+                var userExists = context.Users.Single(user => user.Email == email && user.Password == encryptedPass);
+            } catch {
+                return NotFound();
+            }
+            try {
+                var itemToDelete = context.ToDoItems.Single(item => item.ToDoId == id && item.UserEmail == email);
+                context.Remove(itemToDelete);
+            } catch {
+                return NotFound();
+            }
+            await context.SaveChangesAsync();
+            return NoContent();
+        }
+    }
 }
